@@ -18,6 +18,8 @@ from iot_edge_mlops import (  # noqa: E402
     compute_jensen_shannon,
     evaluate_telemetry_drift,
     run_glrt_mle_telemetry_benchmark,
+    deduplicate_staging_telemetry,
+    evaluate_telemetry_microservice_batch,
     build_vertex_kubeflow_pipeline_manifest,
 )
 
@@ -93,3 +95,37 @@ def test_vertex_pipeline_and_feature_store_manifests() -> None:
     dag = build_vertex_kubeflow_pipeline_manifest()
     assert len(dag["stages"]) == 5
     assert dag["orchestrator"] == "Vertex AI Pipelines (Kubeflow v2 / TFX)"
+
+
+def test_telemetry_microservice_deduplication_and_drift_contract() -> None:
+    import pandas as pd
+
+    df = IoTTelemetryFeatureEngineer.generate_realistic_iot_telemetry(n_samples=800, n_devices=5, random_state=19)
+    fe = IoTTelemetryFeatureEngineer(rolling_window=4)
+    X_ref, _ = fe.fit_transform(df.iloc[:400])
+    X_cur, _ = fe.transform(df.iloc[400:])
+
+    staging = pd.DataFrame(
+        {
+            "reading_id": ["r1", "r2", "r2", "r3", "r4"],
+            "sensor_reading": [-78.5, -80.2, -80.2, -55.0, -79.1],
+            "low_limit": [-85.0, -85.0, -85.0, -85.0, -85.0],
+            "high_limit": [-70.0, -70.0, -70.0, -70.0, -70.0],
+            "minutes_since_last_ping": [12.0, 15.0, 15.0, 95.0, 20.0],
+        }
+    )
+    report = evaluate_telemetry_microservice_batch(
+        reference_features=X_ref,
+        current_features=X_cur,
+        feature_names=fe.feature_names_,
+        staging_df=staging,
+        existing_ids={"r1"},
+        psi_threshold=0.20,
+    )
+    assert report.stream_batch_rows == 5
+    assert report.deduplicated_rows_inserted == 3
+    assert report.duplicate_rows_filtered == 2
+    assert report.stale_streams_flagged == 1
+    assert report.critical_alert_streams == 1
+    assert report.psi_contract_passed is True
+
