@@ -55,9 +55,9 @@ def evaluate_telemetry_microservice_batch(
     """Run duplicate-safe ingestion, stale-stream triage, and PSI drift contract checks."""
     clean_df, dup_count = deduplicate_staging_telemetry(staging_df, existing_ids)
     drift_report = evaluate_telemetry_drift(
-        reference_features=reference_features,
-        current_features=current_features,
-        feature_names=feature_names,
+        reference_features,
+        current_features,
+        feature_names,
         psi_threshold=psi_threshold,
     )
     stale_count = int((clean_df["minutes_since_last_ping"] > stale_minutes_threshold).sum())
