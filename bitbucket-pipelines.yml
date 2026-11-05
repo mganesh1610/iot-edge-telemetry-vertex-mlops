@@ -1,0 +1,14 @@
+image: python:3.11-slim
+
+pipelines:
+  default:
+    - step:
+        name: Run Unit Tests & Edge MLOps Validation Gate
+        caches:
+          - pip
+        script:
+          - pip install -r requirements.txt
+          - PYTHONPATH=src pytest tests/ -v
+          - python scripts/run_validation_suite.py
+        artifacts:
+          - artifacts/validation_report.json

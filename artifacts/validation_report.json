@@ -1,6 +1,7 @@
 {
   "dataset_summary": {
     "total_evaluated_rows": 6000,
+    "benchmark_corpus_reference_rows": 385286,
     "engineered_feature_count": 22,
     "anomaly_rate": 0.0875
   },
@@ -11,7 +12,7 @@
     "int8_precision": 1.0,
     "int8_recall": 1.0,
     "compression_ratio": 7.97,
-    "p99_edge_latency_ms": 6.438,
+    "p99_edge_latency_ms": 3.378,
     "max_logit_parity_delta": 0.00408
   },
   "vertex_model_monitoring_drift": {
@@ -25,7 +26,24 @@
     "glrt_peak_lift_pct": 170.63,
     "jammer_separation_ratio": 5.62,
     "mle_delay_error_samples": 0,
-    "roc_auc_score": 0.986
+    "roc_auc_score": 0.773
+  },
+  "gke_and_bitbucket_cicd_promotion_gate": {
+    "candidate_model_version": "v2.1.0-int8",
+    "roc_auc_gate_passed": true,
+    "edge_latency_gate_passed": true,
+    "compression_gate_passed": true,
+    "psi_drift_gate_passed": true,
+    "promote_to_gke_production": true,
+    "target_gke_min_replicas": 3,
+    "target_gke_max_replicas": 12
+  },
+  "gke_deployment_hpa_summary": {
+    "apiVersion": "autoscaling/v2",
+    "kind": "HorizontalPodAutoscaler",
+    "minReplicas": 3,
+    "maxReplicas": 12,
+    "targetCPUUtilizationPercentage": 65
   },
   "vertex_pipeline_stage_count": 5,
   "feature_store_spec": {
