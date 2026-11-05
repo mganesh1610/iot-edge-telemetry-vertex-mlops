@@ -1,0 +1,45 @@
+{
+  "dataset_summary": {
+    "total_evaluated_rows": 6000,
+    "engineered_feature_count": 22,
+    "anomaly_rate": 0.0875
+  },
+  "model_and_edge_quantization_metrics": {
+    "fp32_roc_auc": 1.0,
+    "int8_roc_auc": 1.0,
+    "int8_f1_score": 1.0,
+    "int8_precision": 1.0,
+    "int8_recall": 1.0,
+    "compression_ratio": 7.97,
+    "p99_edge_latency_ms": 6.438,
+    "max_logit_parity_delta": 0.00408
+  },
+  "vertex_model_monitoring_drift": {
+    "healthy_window_mean_psi": 0.0194,
+    "healthy_window_max_psi": 0.1638,
+    "healthy_retraining_triggered": false,
+    "drifted_window_max_psi": 4.1104,
+    "drifted_retraining_triggered": true
+  },
+  "multi_sensor_glrt_signal_detection": {
+    "glrt_peak_lift_pct": 170.63,
+    "jammer_separation_ratio": 5.62,
+    "mle_delay_error_samples": 0,
+    "roc_auc_score": 0.986
+  },
+  "vertex_pipeline_stage_count": 5,
+  "feature_store_spec": {
+    "featurestore_config": {
+      "project_id": "cloud-mlops-telemetry-prod",
+      "region": "us-central1",
+      "featurestore_id": "iot_smart_sensor_featurestore",
+      "entity_type_id": "device_sensor_stream",
+      "bq_dataset": "iot_telemetry_warehouse",
+      "bq_table": "sensor_engineered_features",
+      "online_serving_ttl_days": 14
+    },
+    "bigquery_source_uri": "bq://cloud-mlops-telemetry-prod.iot_telemetry_warehouse.sensor_engineered_features",
+    "entity_id_column": "device_id",
+    "feature_time_column": "event_timestamp"
+  }
+}
