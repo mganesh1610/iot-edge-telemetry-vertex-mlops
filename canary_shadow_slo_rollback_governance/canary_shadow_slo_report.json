@@ -1,0 +1,40 @@
+{
+  "telemetry_corpus_frames": 385286,
+  "uci_zigbee_frames": 19735,
+  "nab_streaming_frames": 365551,
+  "evaluation_window_frames": 4000,
+  "model_lineage_telemetry": {
+    "champion_version": "v1.4.0-int8",
+    "shadow_candidate_version": "v1.5.0-shadow",
+    "degraded_canary_version": "v1.5.1-canary",
+    "lineage_artifact_sha256_prefix": "acb7097db797e5bc",
+    "react_dashboard_schema_version": "2.1.0"
+  },
+  "slo_targets": {
+    "p95_latency_ms_max": 10.0,
+    "availability_pct_min": 99.9,
+    "error_rate_pct_max": 0.5
+  },
+  "champion_metrics": {
+    "p50_latency_ms": 1.92,
+    "p95_latency_ms": 3.72,
+    "roc_auc": 0.9642,
+    "availability_pct": 99.97
+  },
+  "shadow_mirror_evaluation": {
+    "traffic_mirror_pct": 100.0,
+    "p50_latency_ms": 1.97,
+    "p95_latency_ms": 3.96,
+    "decision_parity_pct": 99.6,
+    "mean_probability_divergence": 0.00686,
+    "promotion_gate_passed": true
+  },
+  "canary_incident_rollback": {
+    "canary_traffic_split_pct": 10.0,
+    "degraded_p95_latency_ms": 23.55,
+    "degraded_error_rate_pct": 1.88,
+    "slo_breach_detected": true,
+    "incident_action": "AUTO_ROLLBACK_TO_CHAMPION_V1_4_0",
+    "rollback_drain_latency_ms": 118.5
+  }
+}
