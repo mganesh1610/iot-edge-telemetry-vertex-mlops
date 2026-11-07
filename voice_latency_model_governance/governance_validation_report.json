@@ -1,0 +1,37 @@
+{
+  "evaluated_streaming_frames": 385286,
+  "fp32_p95_latency_ms": 18.73,
+  "int8_p95_latency_ms": 4.11,
+  "latency_speedup_x": 4.56,
+  "p95_latency_reduction_pct": 78.06,
+  "model_compression_ratio_x": 7.97,
+  "holdout_roc_auc": 0.9642,
+  "stable_psi": 0.00039,
+  "stable_js_divergence": 5e-05,
+  "canary_drift_psi": 0.29217,
+  "canary_retrain_triggered": true,
+  "model_inventory_registry": [
+    {
+      "model_id": "PROD-STREAM-INT8-V2",
+      "architecture": "INT8 Quantized PyTorch Temporal Autoencoder + XGBoost Ensemble",
+      "training_frames": 385286,
+      "holdout_roc_auc": 0.9642,
+      "compression_ratio": 7.97,
+      "p95_inference_latency_ms": 4.11,
+      "psi_drift_score": 0.00039,
+      "js_divergence": 5e-05,
+      "deployment_gate": "PASSED_PRODUCTION_SLO"
+    },
+    {
+      "model_id": "CANARY-DRIFT-STRESS-V2",
+      "architecture": "Canary Out-of-Distribution Stress Audit",
+      "training_frames": 385286,
+      "holdout_roc_auc": 0.941,
+      "compression_ratio": 3.99,
+      "p95_inference_latency_ms": 18.73,
+      "psi_drift_score": 0.29217,
+      "js_divergence": 0.03583,
+      "deployment_gate": "QUARANTINED_RETRAIN_TRIGGERED"
+    }
+  ]
+}
